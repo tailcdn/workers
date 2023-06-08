@@ -14,6 +14,7 @@ type ResponseWriter struct {
 	Writer      *io.PipeWriter
 	ReadyCh     chan struct{}
 	Once        sync.Once
+	WebSocket   js.Value
 }
 
 var _ http.ResponseWriter = &ResponseWriter{}
@@ -41,5 +42,5 @@ func (w *ResponseWriter) WriteHeader(statusCode int) {
 // ToJSResponse converts *ResponseWriter to JavaScript sides Response.
 //   - Response: https://developer.mozilla.org/docs/Web/API/Response
 func (w *ResponseWriter) ToJSResponse() js.Value {
-	return newJSResponse(w.StatusCode, w.HeaderValue, w.Reader)
+	return newJSResponse(w.StatusCode, w.HeaderValue, w.Reader, w.WebSocket)
 }

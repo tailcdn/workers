@@ -18,6 +18,7 @@ var (
 	ErrorClass          = Global.Get("Error")
 	ReadableStreamClass = Global.Get("ReadableStream")
 	DateClass           = Global.Get("Date")
+	WebSocketPairClass  = Global.Get("WebSocketPair")
 	Null                = js.ValueOf(nil)
 )
 

@@ -33,12 +33,12 @@ func ToResponse(res js.Value) (*http.Response, error) {
 
 // ToJSResponse converts *http.Response to JavaScript sides Response class object.
 func ToJSResponse(res *http.Response) js.Value {
-	return newJSResponse(res.StatusCode, res.Header, res.Body)
+	return newJSResponse(res.StatusCode, res.Header, res.Body, jsutil.Null)
 }
 
 // newJSResponse creates JavaScript sides Response class object.
 //   - Response: https://developer.mozilla.org/docs/Web/API/Response
-func newJSResponse(statusCode int, headers http.Header, body io.ReadCloser) js.Value {
+func newJSResponse(statusCode int, headers http.Header, body io.ReadCloser, websocket js.Value) js.Value {
 	status := statusCode
 	if status == 0 {
 		status = http.StatusOK
@@ -47,6 +47,7 @@ func newJSResponse(statusCode int, headers http.Header, body io.ReadCloser) js.V
 	respInit.Set("status", status)
 	respInit.Set("statusText", http.StatusText(status))
 	respInit.Set("headers", ToJSHeader(headers))
+	respInit.Set("webSocket", websocket)
 	if status == http.StatusSwitchingProtocols ||
 		status == http.StatusNoContent ||
 		status == http.StatusResetContent ||
